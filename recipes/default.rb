@@ -16,3 +16,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+tar_package 'https://dl.duosecurity.com/duoauthproxy-latest-src.tgz' do 
+    prefix '/var/duo'
+    creates '/var/duo/duoauthproxy-version-src'
+end
+
+include_recipe 'duoproxy::config_edit'
+
