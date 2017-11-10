@@ -1,5 +1,5 @@
 #
-# Cookbook:: duo
+# Cookbook:: duoproxy
 # Recipe:: default
 #
 # Copyright:: 2017, Laura Melton
@@ -16,10 +16,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-tar_package 'https://dl.duosecurity.com/duoauthproxy-latest-src.tgz' do 
-    prefix '/var/duo'
-    creates '/var/duo/duoauthproxy-version-src'
+ark 'duoproxy' do 
+    url 'https://dl.duosecurity.com/duoauthproxy-latest-src.tgz'
+    owner 'root'
+    prefix_root '/opt'
+    prefix_home '/opt'
+    prefix_bin '/opt/bin'
+    action :install_with_make
 end
 
 include_recipe 'duoproxy::config_edit'
-

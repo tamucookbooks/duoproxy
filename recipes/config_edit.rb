@@ -1,4 +1,4 @@
-template '/opt/duoauthproxy/conf/authproxy.cfg' do 
+template '/opt/duoproxy-1/conf/authproxy.cfg' do 
     source 'authproxy.erb'
     owner 'root'
     group 'root'
