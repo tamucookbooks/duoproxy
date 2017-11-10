@@ -16,17 +16,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apt_package 'python-dev' do 
+apt_package 'python-dev' do
     action :install
-end    
+end  
 
-ark 'duoproxy' do 
-    url 'https://dl.duosecurity.com/duoauthproxy-latest-src.tgz'
-    owner 'root'
-    prefix_root '/opt'
-    prefix_home '/opt'
-    prefix_bin '/opt/bin'
-    action :install
+ark 'duoproxy' do
+  url 'https://dl.duosecurity.com/duoauthproxy-latest-src.tgz'
+  owner 'root'
+  prefix_root '/opt'
+  prefix_home '/opt'
+  prefix_bin '/opt/bin'
+  action :install
 end
 
 include_recipe 'duoproxy::config_edit'
