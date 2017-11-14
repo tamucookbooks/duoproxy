@@ -17,8 +17,8 @@
 # limitations under the License.
 
 apt_package 'python-dev' do
-    action :install
-end  
+  action :install
+end
 
 ark 'duoproxy' do
   url 'https://dl.duosecurity.com/duoauthproxy-latest-src.tgz'
