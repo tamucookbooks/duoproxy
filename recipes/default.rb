@@ -2,7 +2,7 @@
 # Cookbook:: duoproxy
 # Recipe:: default
 #
-# Copyright:: 2017, Laura Melton
+# Copyright:: 2017, Texas A&M University
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 # limitations under the License.
 
 apt_package 'python-dev' do
-    action :install
-end  
+  action :install
+end
 
 ark 'duoproxy' do
   url 'https://dl.duosecurity.com/duoauthproxy-latest-src.tgz'
@@ -29,4 +29,18 @@ ark 'duoproxy' do
   action :install
 end
 
-include_recipe 'duoproxy::config_edit'
+template '/opt/duoproxy-1/conf/authproxy.cfg' do
+  source 'default.erb'
+  owner 'root'
+  group 'root'
+  variables(
+    host: node['duoproxy']['host'],
+    host_2: node['duoproxy']['host_2'],
+    service_account_username: node['duoproxy']['service_account_username'],
+    service_account_password: node['duoproxy']['service_account_password'],
+    search_dn: node['duoproxy']['search_dn'],
+    ikey: node['duoproxy']['ikey'],
+    skey: node['duoproxy']['skey'],
+    api_host: node['duoproxy']['api_host']
+  )
+end
