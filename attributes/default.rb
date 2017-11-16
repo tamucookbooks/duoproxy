@@ -11,3 +11,4 @@ default['duoproxy']['install_prefix'] = '/opt'
 default['duoproxy']['version'] = 'latest'
 default['duoproxy']['url'] = 'https://dl.duosecurity.com/duoauthproxy-'\
                              "#{node['duoproxy']['version']}-src.tgz"
+default['duoproxy']['package_dependencies'] = %w(python-dev libffi-dev libssl-dev)

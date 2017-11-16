@@ -16,8 +16,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apt_package 'python-dev' do
-  action :install
+Array(node['duoproxy']['package_dependencies']).each do |pkg|
+  apt_package pkg do
+    action :install
+  end
 end
 
 ark 'duoproxy' do
