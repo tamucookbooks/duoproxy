@@ -21,15 +21,17 @@ apt_package 'python-dev' do
 end
 
 ark 'duoproxy' do
-  url 'https://dl.duosecurity.com/duoauthproxy-latest-src.tgz'
+  url node['duoproxy']['url']
   owner 'root'
-  prefix_root '/opt'
-  prefix_home '/opt'
-  prefix_bin '/opt/bin'
+  prefix_root node['duoproxy']['install_prefix']
+  prefix_home node['duoproxy']['install_prefix']
+  prefix_bin "#{node['duoproxy']['install_prefix']}/bin"
+  version node['duoproxy']['version']
   action :install
 end
 
-template '/opt/duoproxy-1/conf/authproxy.cfg' do
+template "#{node['duoproxy']['install_prefix']}/duoproxy-"\
+         "#{node['duoproxy']['version']}/conf/authproxy.cfg" do
   source 'default.erb'
   owner 'root'
   group 'root'

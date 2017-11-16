@@ -6,3 +6,8 @@ default['duoproxy']['search_dn'] = 'CN=USERS,DC=CONTOSO,DC=COM'
 default['duoproxy']['ikey'] = 'PRIVATEKEY123'
 default['duoproxy']['skey'] = 'PRIVATEPASS1234!'
 default['duoproxy']['api_host'] = 'api-56758764654.duosecurity.com'
+default['duoproxy']['install_prefix'] = '/opt'
+# Version changelog: https://duo.com/docs/authproxy-notes
+default['duoproxy']['version'] = 'latest'
+default['duoproxy']['url'] = 'https://dl.duosecurity.com/duoauthproxy-'\
+                             "#{node['duoproxy']['version']}-src.tgz"
