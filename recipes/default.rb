@@ -48,8 +48,7 @@ if !::File.exist?('/opt/duoauthproxy/bin/authproxy')
     action :run
     notifies :restart, 'service[duoauthproxy]'
   end
-
-  # remove source we dropped into /opt/src/duoauthproxy
+  
   execute 'remove install file' do
     command "/bin/rm -rf #{node['duoproxy']['install_prefix']}/src/duoauthproxy"
   end
