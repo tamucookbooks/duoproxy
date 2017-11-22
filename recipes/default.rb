@@ -22,18 +22,39 @@ Array(node['duoproxy']['package_dependencies']).each do |pkg|
   end
 end
 
-ark 'duoproxy' do
-  url node['duoproxy']['url']
-  owner 'root'
-  prefix_root node['duoproxy']['install_prefix']
-  prefix_home node['duoproxy']['install_prefix']
-  prefix_bin "#{node['duoproxy']['install_prefix']}/bin"
-  version node['duoproxy']['version']
-  action :install
+if !::File.exist?('/opt/duoauthproxy/bin/authproxy')
+  ark 'duoauthproxy' do
+    url node['duoproxy']['url']
+    owner 'root'
+    path "#{node['duoproxy']['install_prefix']}/src"
+    version node['duoproxy']['version']
+    action :put
+  end
+
+  execute 'make' do
+    cwd "#{node['duoproxy']['install_prefix']}/src/duoauthproxy"
+    command 'make'
+  end
+
+  execute 'remove installed' do
+    command "/bin/rm -rf #{node['duoproxy']['install_prefix']}/duoauthproxy"
+    only_if { ::File.exist? ("#{node['duoproxy']['install_prefix']}/duoauthproxy")}
+  end
+
+  execute 'install' do
+    cwd "#{node['duoproxy']['install_prefix']}/src/duoauthproxy/duoauthproxy-build"
+    command "./install --install-dir=#{node['duoproxy']['install_prefix']}/duoauthproxy --service-user=root --create-init-script=yes"
+    user 'root'
+    action :run
+    notifies :restart, 'service[duoauthproxy]'
+  end
+  
+  execute 'remove install file' do
+    command "/bin/rm -rf #{node['duoproxy']['install_prefix']}/src/duoauthproxy"
+  end
 end
 
-template "#{node['duoproxy']['install_prefix']}/duoproxy-"\
-         "#{node['duoproxy']['version']}/conf/authproxy.cfg" do
+template "#{node['duoproxy']['install_prefix']}/duoauthproxy/conf/authproxy.cfg" do
   source 'default.erb'
   owner 'root'
   group 'root'
@@ -47,4 +68,9 @@ template "#{node['duoproxy']['install_prefix']}/duoproxy-"\
     skey: node['duoproxy']['skey'],
     api_host: node['duoproxy']['api_host']
   )
+  notifies :restart, 'service[duoauthproxy]'
+end
+
+service 'duoauthproxy' do
+    action [:enable, :start]
 end
