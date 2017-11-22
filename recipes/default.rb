@@ -22,7 +22,7 @@ Array(node['duoproxy']['package_dependencies']).each do |pkg|
   end
 end
 
-if !::File.exist?('/opt/duoauthproxy/bin/authproxy')
+if !::File.exist?("#{node['duoproxy']['install_prefix']}/duoauthproxy/bin/authproxy")
   ark 'duoauthproxy' do
     url node['duoproxy']['url']
     owner 'root'
@@ -48,7 +48,7 @@ if !::File.exist?('/opt/duoauthproxy/bin/authproxy')
     action :run
     notifies :restart, 'service[duoauthproxy]'
   end
-  
+
   execute 'remove install file' do
     command "/bin/rm -rf #{node['duoproxy']['install_prefix']}/src/duoauthproxy"
   end
